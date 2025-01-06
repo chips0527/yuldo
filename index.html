@@ -65,9 +65,13 @@
         }
 
         .dorm-description {
-            color: #555;
-            white-space: pre-line;
-        }
+        color: #333;
+        font-size: 16px;
+        line-height: 1.5;
+        text-align: left;
+        margin: 20px 0;
+}
+
 
         .button-container {
             display: flex;
@@ -82,8 +86,11 @@
 </head>
 <body>
 
+    <!-- 효과음 재생용 오디오 태그 -->
+    <audio id="clickSound1" src="https://github.com/chips0527/yuldowon/raw/main/9.mp3" preload="auto"></audio>
+    <audio id="clickSound2" src="https://github.com/chips0527/yuldowon/raw/main/drink%20sound.mp3" preload="auto"></audio>
 
-   <audio id="backgroundAudio" loop muted>
+       <audio id="backgroundAudio" loop muted>
         <source src="https://github.com/chips0527/yuldowon/raw/main/horizon_nok.mp3" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
@@ -93,8 +100,8 @@
     <!-- Step 1 -->
     <div id="step1" class="step active">
         <h1>예디버스에 오신 걸 환영합니다.</h1>
-        <p>여행자님, 반갑습니다.<br>율도원 입학식에 참석하러 오셨나요?</p>
-        <button class="button" onclick="goToNextStep(2)">예</button>
+        <p>여행자님, 반갑습니다.<br>율도원 입학식에 참석하시겠습니까?</p>
+        <button class="button" onclick="playClickSound1(); goToNextStep(2)">예</button>
     </div>
 
     <!-- Step 2 -->
@@ -103,7 +110,7 @@
     <input type="text" id="name" class="input-field" placeholder="이름을 입력하세요" required>
     <input type="date" id="birthdate" class="input-field" placeholder="생년월일을 입력하세요" required>
     <input type="text" id="dayMaster" class="input-field" placeholder="일간을 입력하세요 (예: 갑목, 병화)" required>
-    <button class="button" onclick="handleNameInput(); goToNextStep(3)">다 적었어요</button>
+    <button class="button" onclick="playClickSound1(); goToNextStep(3)">다 적었어요.</button>
 </div>
 
     <!-- Step 3 -->
@@ -115,7 +122,7 @@
             동갑의 소년, 소녀들이 삼삼오오 모여 앉아있고<br>
             저 앞에선 율도원 부원장님이 기숙사에 대해 설명하고 있습니다.
         </p>
-        <button class="button" onclick="goToNextStep(4)">다음</button>
+        <button class="button" onclick="playClickSound1(); goToNextStep(4)">다음</button>
     </div>
 
     <!-- Step 4 -->
@@ -123,33 +130,33 @@
         <h1>율도원의 기숙사</h1>
         <p>율도원에는 다섯 개의 기숙사가 있습니다.<br>
         오행에 따라 다음과 같이 나뉩니다.<br>
-        <span style="color: #B0C4DE;">- 백작관</span><br>
-        <span style="color: #228B22;">- 청양관</span><br>
-        <span style="color: #000080;">- 흑상관</span><br>
-        <span style="color: #FF4500;">- 적초관</span><br>
-        <span style="color: #D2691E;">- 황접관</span></p>        
-        <button class="button" onclick="goToNextStep(5)">확인</button>
+        <span style="color: #B0C4DE;">- 백작관🕊</span><br>
+        <span style="color: #228B22;">- 청양관🐐</span><br>
+        <span style="color: #000080;">- 흑상관🐬</span><br>
+        <span style="color: #FF4500;">- 적초관🦊</span><br>
+        <span style="color: #D2691E;">- 황접관🦋</span></p>        
+        <button class="button" onclick="playClickSound1(); goToNextStep(5)">확인했어요.</button>
     </div>
 
     <!-- Step 5 -->
     <div id="step5" class="step">
         <h2>“ㅡ의식을 시작하겠습니다.”</h2>
         <p>부원장님의 설명이 끝나고, 드디어 배정이 시작됩니다.<br><span id="userNameDisplay">당신</span>님의 운명은 어느 기숙사와 함께 할까요?</br>눈앞에 있는 박달나무 차를 마셔주세요.</p>
-        <button class="button" onclick="goToNextStep(6)">차를 한 모금 마신다.</button>
+        <button class="button" onclick="playClickSound2(); goToNextStep(6)">차를 한 모금 마신다.</button>
     </div>
 
     <!-- Step 6 -->
     <div id="step6" class="step">
-        <p>찻물의 색이 점차 변하며,</br>기숙사의 상징색이 찻물의 표면으로 떠오릅니다.</p>
+        <p>찻물의 색이 점차 변하며,</br>점점 찻물의 표면으로 진한 색감이 떠오릅니다.</p>
         <p><span id="userNameDisplay">당신</span>님의 기숙사는 <span id="assignedDorm"></span>입니다.</p>
-        <button class="button" onclick="goToNextStep(7)">!!!</button>
+        <button class="button" onclick="playClickSound1(); goToNextStep(7)">!!!</button>
     </div>
 
     <!-- Step 7 - 기숙사 설명 추가 -->
     <div id="step7" class="step">
-        <h2>기숙사 설명</h2>
+        <h2>배정을 축하합니다.</h2>
         <p id="dormDescription" class="dorm-description"></p>
-        <button class="button" onclick="goToNextStep(8)">확인</button>
+        <button class="button" onclick="playClickSound1(); goToNextStep(8)">확인했어요.</button>
     </div>
 
     <!-- Step 8 -->
@@ -157,19 +164,35 @@
         <p><span id="userNameDisplay">당신</span>님은 이 기숙사에서 9년간 수학하며,</p>
         <p>친구들과 다양한 추억을 쌓아 성장하게 됩니다.</p>
         <p>앞으로 <span id="userNameDisplay">당신</span>님의 율도원에서의 활약을 기대하겠습니다.</p>
-        <button class="button" onclick="goToNextStep(9)">네!</button>
+        <button class="button" onclick="playClickSound1(); goToNextStep(9)">네!</button>
     </div>
 
     <!-- Step 9 -->
     <div id="step9" class="step">
         <div class="button-container">
-            <button class="button" onclick="restart()">기숙사 다시 배정받기</button>
-            <button class="button" onclick="closePage()">종료</button>
+            <button class="button" onclick="playClickSound1(); restart()">기숙사 다시 배정받기</button>
+            <button class="button" onclick="playClickSound1(); closePage()">종료</button>
         </div>
     </div>
 
     <script>
-        // 기숙사 설명 추가
+        // 첫 번째 효과음을 재생하는 함수
+        function playClickSound1() {
+            const audio = document.getElementById('clickSound1');
+            if (audio) {
+                audio.currentTime = 0; // 항상 처음부터 재생
+                audio.play();          // 효과음 재생
+            }
+        }
+
+        // 두 번째 효과음을 재생하는 함수
+        function playClickSound2() {
+            const audio = document.getElementById('clickSound2');
+            if (audio) {
+                audio.currentTime = 0; // 항상 처음부터 재생
+                audio.play();          // 효과음 재생
+            }
+        }        // 기숙사 설명 추가
         const dormDescriptions = {
             "백작관": "백작관\n상징 동물: 하얀 까치\n상징 오행: 금속\n상징 색: 백색\n기숙사 상징 : 비상\n기숙사 이념: 이상(의義)\n창립 시기: 세종시기\n창립자: 백제 마장술 전승자 김선화",
             "적초관": "적초관\n상징 동물: 붉은 담비\n상징 오행: 불\n상징 색: 붉은색\n기숙사 상징 : 열정\n기숙사 이념: 힘(예禮)\n창립 시기: 세종시기\n창립자: 4군 6진 개척기여자 돈 지담 장군",
@@ -205,40 +228,48 @@ function goToNextStep(step) {
     }
 
     // Step 6에서 기숙사 배정 처리
-    if (step === 6) {
-        const dayMaster = document.getElementById('dayMaster').value.trim();
-        if (!dayMaster) {
-            alert("일간을 입력해 주세요.");
-            return;
-        }
+if (step === 6) {
+    const dayMaster = document.getElementById('dayMaster').value.trim();
+    if (!dayMaster) {
+        alert("일간을 입력해 주세요.");
+        return;
+    }
 
-        const firstChar = dayMaster.charAt(0);
-        const dorms = {
-            "갑": "청양관",
-            "을": "청양관",
-            "병": "적초관",
-            "정": "적초관",
-            "무": "황접관",
-            "기": "황접관",
-            "경": "백작관",
-            "신": "백작관",
-            "임": "흑상관",
-            "계": "흑상관"
-        };
+    const firstChar = dayMaster.charAt(0);
+    const dorms = {
+        "갑": "청양관",
+        "을": "청양관",
+        "병": "적초관",
+        "정": "적초관",
+        "무": "황접관",
+        "기": "황접관",
+        "경": "백작관",
+        "신": "백작관",
+        "임": "흑상관",
+        "계": "흑상관"
+    };
 
-        const assignedDorm = dorms[firstChar] || "알 수 없음";
-        document.getElementById('assignedDorm').innerText = assignedDorm;
+    const assignedDorm = dorms[firstChar] || "알 수 없음";
+    document.getElementById('assignedDorm').innerText = assignedDorm;
 
-        const dormColor = {
-            "청양관": "#228B22",
-            "적초관": "#FF4500",
-            "황접관": "#D2691E",
-            "백작관": "#B0C4DE",
-            "흑상관": "#000080"
-        };
+    const dormColor = {
+        "청양관": "#228B22",
+        "적초관": "#FF4500",
+        "황접관": "#D2691E",
+        "백작관": "#B0C4DE",
+        "흑상관": "#000080"
+    };
 
-        // 기숙사 이름 색상만 해당 색상으로 변경
-        document.getElementById('assignedDorm').style.color = dormColor[assignedDorm];
+    // 기숙사 이름 색상만 해당 색상으로 변경
+    document.getElementById('assignedDorm').style.color = dormColor[assignedDorm];
+
+    // Step 7 기숙사 설명을 형식에 맞게 표시
+    const dormDescriptionElement = document.getElementById('dormDescription');
+    dormDescriptionElement.innerHTML = dormDescriptions[assignedDorm]
+        .split("\n")
+        .map(line => `<p>${line}</p>`)
+        .join("");
+
 
         // 기숙사 설명을 추가
         document.getElementById('dormDescription').innerText = dormDescriptions[assignedDorm];
@@ -259,6 +290,7 @@ function handleNameInput() {
         function closePage() {
             window.close();
         }
+
 
         // 배경 이미지 업데이트 함수
         function updateBackgroundImage(step) {
@@ -284,6 +316,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!audio.muted) {
                 audio.play();
             }
+
         }
     </script>
 </body>
