@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>율도원 기숙사 배정</title>
+    <style>
+        .button {
+            background-color: #6a0dad;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #8a2be2;
+        }
+
+        /* 오디오 시작 버튼을 좌상단으로 고정 */
+        .audio-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10; /* 버튼을 다른 요소 위에 표시 */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .step {
+            display: none;
+            position: relative;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .input-field {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .dorm-description {
+            color: #555;
+            white-space: pre-line;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-container .button {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+
+   <audio id="backgroundAudio" loop muted>
+        <source src="https://github.com/chips0527/yuldowon/raw/main/horizon_nok.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <button class="button audio-button" onclick="startAudio()">지평선이 사라지는 곳 - 녹음</button>
+
+    <!-- Step 1 -->
+    <div id="step1" class="step active">
+        <h1>예디버스에 오신 걸 환영합니다.</h1>
+        <p>여행자님, 반갑습니다.<br>율도원 입학식에 참석하러 오셨나요?</p>
+        <button class="button" onclick="goToNextStep(2)">예</button>
+    </div>
+
+    <!-- Step 2 -->
+<div id="step2" class="step">
+    <h1>입학식에 앞서 당신에 대해 알려주세요</h1>
+    <input type="text" id="name" class="input-field" placeholder="이름을 입력하세요" required>
+    <input type="date" id="birthdate" class="input-field" placeholder="생년월일을 입력하세요" required>
+    <input type="text" id="dayMaster" class="input-field" placeholder="일간을 입력하세요 (예: 갑목, 병화)" required>
+    <button class="button" onclick="handleNameInput(); goToNextStep(3)">다 적었어요</button>
+</div>
+
+    <!-- Step 3 -->
+    <div id="step3" class="step">
+        <h1>해질녘의 율도원 대광장</h1>
+        <p>
+            오늘 율도원에 입학한 <span id="userNameDisplay">당신</span>님은<br>
+            기숙사를 배정받는 의식을 위해 이곳에 있습니다.<br>
+            동갑의 소년, 소녀들이 삼삼오오 모여 앉아있고<br>
+            저 앞에선 율도원 부원장님이 기숙사에 대해 설명하고 있습니다.
+        </p>
+        <button class="button" onclick="goToNextStep(4)">다음</button>
+    </div>
+
+    <!-- Step 4 -->
+    <div id="step4" class="step">
+        <h1>율도원의 기숙사</h1>
+        <p>율도원에는 다섯 개의 기숙사가 있습니다.<br>
+        오행에 따라 다음과 같이 나뉩니다.<br>
+        <span style="color: #B0C4DE;">- 백작관</span><br>
+        <span style="color: #228B22;">- 청양관</span><br>
+        <span style="color: #000080;">- 흑상관</span><br>
+        <span style="color: #FF4500;">- 적초관</span><br>
+        <span style="color: #D2691E;">- 황접관</span></p>        
+        <button class="button" onclick="goToNextStep(5)">확인</button>
+    </div>
+
+    <!-- Step 5 -->
+    <div id="step5" class="step">
+        <h2>“ㅡ의식을 시작하겠습니다.”</h2>
+        <p>부원장님의 설명이 끝나고, 드디어 배정이 시작됩니다.<br><span id="userNameDisplay">당신</span>님의 운명은 어느 기숙사와 함께 할까요?</br>눈앞에 있는 박달나무 차를 마셔주세요.</p>
+        <button class="button" onclick="goToNextStep(6)">차를 한 모금 마신다.</button>
+    </div>
+
+    <!-- Step 6 -->
+    <div id="step6" class="step">
+        <p>찻물의 색이 점차 변하며,</br>기숙사의 상징색이 찻물의 표면으로 떠오릅니다.</p>
+        <p><span id="userNameDisplay">당신</span>님의 기숙사는 <span id="assignedDorm"></span>입니다.</p>
+        <button class="button" onclick="goToNextStep(7)">!!!</button>
+    </div>
+
+    <!-- Step 7 - 기숙사 설명 추가 -->
+    <div id="step7" class="step">
+        <h2>기숙사 설명</h2>
+        <p id="dormDescription" class="dorm-description"></p>
+        <button class="button" onclick="goToNextStep(8)">확인</button>
+    </div>
+
+    <!-- Step 8 -->
+    <div id="step8" class="step">
+        <p><span id="userNameDisplay">당신</span>님은 이 기숙사에서 9년간 수학하며,</p>
+        <p>친구들과 다양한 추억을 쌓아 성장하게 됩니다.</p>
+        <p>앞으로 <span id="userNameDisplay">당신</span>님의 율도원에서의 활약을 기대하겠습니다.</p>
+        <button class="button" onclick="goToNextStep(9)">네!</button>
+    </div>
+
+    <!-- Step 9 -->
+    <div id="step9" class="step">
+        <div class="button-container">
+            <button class="button" onclick="restart()">기숙사 다시 배정받기</button>
+            <button class="button" onclick="closePage()">종료</button>
+        </div>
+    </div>
+
+    <script>
+        // 기숙사 설명 추가
+        const dormDescriptions = {
+            "백작관": "백작관\n상징 동물: 하얀 까치\n상징 오행: 금속\n상징 색: 백색\n기숙사 상징 : 비상\n기숙사 이념: 이상(의義)\n창립 시기: 세종시기\n창립자: 백제 마장술 전승자 김선화",
+            "적초관": "적초관\n상징 동물: 붉은 담비\n상징 오행: 불\n상징 색: 붉은색\n기숙사 상징 : 열정\n기숙사 이념: 힘(예禮)\n창립 시기: 세종시기\n창립자: 4군 6진 개척기여자 돈 지담 장군",
+            "청양관": "청양관\n상징 동물: 푸른 산양\n상징 오행: 나무\n상징 색: 푸른색\n기숙사 상징 : 포용\n기숙사 이념: 박애(인仁)\n창립 시기: 태종-세종 시기\n창립자: 동아시아의 유랑시인이자 마법역사학자인 양 화명",
+            "황접관": "황접관\n상징 동물: 황색 나비\n상징 오행: 흙\n상징 색: 황색\n기숙사 상징 : 인내\n기숙사 이념: 믿음(신信)\n창립 시기: 세종시기\n창립자: 대검무당, 의관인 사비 화",
+            "흑상관": "흑상관\n상징 동물: 검은 상괭이\n상징 오행: 물\n상징 색: 흑색\n기숙사 상징: 소통\n기숙사 이념: 지혜(지智)\n창립 시기: 세종시기\n창립자: 천문학자 겸 예언자 석 호연겸"
+        };
+
+        let currentStep = 1;
+
+        let userName = ''; // 글로벌 변수로 이름을 저장
+
+// Step 이동 처리 함수
+function goToNextStep(step) {
+    document.querySelector(`#step${currentStep}`).classList.remove('active');
+    document.querySelector(`#step${step}`).classList.add('active');
+    currentStep = step;
+    updateBackgroundImage(step);
+
+    // Step 3, 5, 6, 8에서 사용자 이름을 표시
+    if (step === 3 || step === 5 || step === 6 || step === 8) {
+        // 이름을 입력받고, 이름이 비어있으면 "당신"으로 설정
+        const displayName = userName ? userName : "당신";
+        const nameDisplayElement = document.getElementById('userNameDisplay');
+        if (nameDisplayElement) {
+            nameDisplayElement.textContent = displayName;
+        }
+    }
+
+    // Step 3에서 사용자 이름이 비어있을 때 알림
+    if (step === 3 && !userName) {
+        alert("이름을 입력해 주세요.");
+    }
+
+    // Step 6에서 기숙사 배정 처리
+    if (step === 6) {
+        const dayMaster = document.getElementById('dayMaster').value.trim();
+        if (!dayMaster) {
+            alert("일간을 입력해 주세요.");
+            return;
+        }
+
+        const firstChar = dayMaster.charAt(0);
+        const dorms = {
+            "갑": "청양관",
+            "을": "청양관",
+            "병": "적초관",
+            "정": "적초관",
+            "무": "황접관",
+            "기": "황접관",
+            "경": "백작관",
+            "신": "백작관",
+            "임": "흑상관",
+            "계": "흑상관"
+        };
+
+        const assignedDorm = dorms[firstChar] || "알 수 없음";
+        document.getElementById('assignedDorm').innerText = assignedDorm;
+
+        const dormColor = {
+            "청양관": "#228B22",
+            "적초관": "#FF4500",
+            "황접관": "#D2691E",
+            "백작관": "#B0C4DE",
+            "흑상관": "#000080"
+        };
+
+        // 기숙사 이름 색상만 해당 색상으로 변경
+        document.getElementById('assignedDorm').style.color = dormColor[assignedDorm];
+
+        // 기숙사 설명을 추가
+        document.getElementById('dormDescription').innerText = dormDescriptions[assignedDorm];
+    }
+}
+
+function handleNameInput() {
+    // Step 2에서 이름을 입력할 때, 입력된 이름을 userName 변수에 저장
+    userName = document.getElementById('name').value.trim();
+}
+
+
+
+        function restart() {
+            location.reload();
+        }
+
+        function closePage() {
+            window.close();
+        }
+
+        // 배경 이미지 업데이트 함수
+        function updateBackgroundImage(step) {
+    const backgroundImages = {
+        1: "url('https://github.com/chips0527/yuldowon/raw/main/lostislandBG.png')",
+        2: "url('https://github.com/chips0527/yuldowon/raw/main/lostislandBG.png')",
+        3: "url('https://github.com/chips0527/yuldowon/raw/main/sunset.png')",
+        4: "url('https://github.com/chips0527/yuldowon/raw/main/sunset.png')",
+        5: "url('https://github.com/chips0527/yuldowon/raw/main/sunset.png')",
+        6: "url('https://github.com/chips0527/yuldowon/raw/main/sunset.png')",
+        7: "url('https://github.com/chips0527/yuldowon/raw/main/sunset.png')",
+        8: "url('https://github.com/chips0527/yuldowon/raw/main/sunset.png')",
+        9: "url('https://github.com/chips0527/yuldowon/raw/main/map.png')"
+            };
+            document.body.style.backgroundImage = backgroundImages[step];
+        }
+document.addEventListener("DOMContentLoaded", function() {
+    updateBackgroundImage(1);  // 첫 번째 스텝 배경 이미지 설정
+});
+        function startAudio() {
+            const audio = document.getElementById("backgroundAudio");
+            audio.muted = !audio.muted;
+            if (!audio.muted) {
+                audio.play();
+            }
+        }
+    </script>
+</body>
+</html>
