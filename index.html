@@ -44,6 +44,12 @@
 
         /* body 스타일이 @font-face 이후에 오도록 수정 */
         body {
+        @media screen and (max-width: 768px) {
+  body {
+    transform: scale(0.8); /* 화면을 80% 크기로 줄임 */
+    transform-origin: top center; /* 축소 기준점 설정 */
+  }
+}
         font-family: 'ChosunCentennial', sans-serif;
         font-size: 20px;
         margin: 0;
